@@ -3,26 +3,18 @@
 Plain HTML, CSS and JavaScript. No frameworks, no build step.
 
 ## Run it
-Open `index.html` in a browser. For best results use a local server: `python3 -m http.server` in this folder, then visit http://localhost:8000.
+Extract the zip fully, then double-click `index.html`. For best results use a local server: run `python3 -m http.server` in this folder and visit http://localhost:8000.
 
 ## Replace or add photos
-- Put new files in the matching folder under `assets/images/` (`profile`, `achievements`, `work-immersion`, `family-friends`).
-- To replace a photo, save the new one with the **same filename**.
-- Keep each image under about 1800 px on its longest side so pages load fast.
-- **Add a family or friends photo:** in `family-friends.html`, copy one `<figure>...</figure>` inside `<div class="gal">`, change the `src`, `alt`, optional caption (`data-cap` and `<figcaption>`), and set `--ar` to width divided by height (for example `.75` for a 3:4 portrait). Four photos show per page (two on phones); page controls appear automatically.
-- **Add an award:** in `achievements.html`, copy an `<div class="item">...</div>` inside `.awards`. Lightbox navigation picks it up automatically.
+- Photos live in `assets/images/` (`profile`, `achievements`, `work-immersion`, `family-friends`). To replace one, save the new file with the **same filename**. Keep images under about 1800 px on the long side.
+- **Family & Friends:** in `family-friends.html`, copy one `<figure>...</figure>` inside `<div class="gal">`, change `src`, `alt` and the optional caption, and set `--ar` to width divided by height (for example `.75` for a 3:4 portrait, `1.3333` for 4:3). Pages and the page buttons adjust themselves.
+- **Awards:** in `achievements.html`, copy an `<div class="item">...</div>` inside `.awards`. Three show per page; the lightbox includes every award.
 
 ## Edit your information
-- **Personal details, education, interests, goals:** `personal.html`.
-- **Age** is calculated from `data-birth="2008-01-07"` in `personal.html`. The page shows only the birthday (January 7), but the birth year is in the page source. Remove that attribute and type your age if you want it hidden.
-- **Intro text:** `index.html`.
-- **Work immersion office:** the certificate says Human Resource Office. Change it in `achievements.html` if you prefer another wording.
+- **About me, contact, education, skills:** `personal.html`.
+- **Age** is calculated from `data-birth="2008-01-07"`. The page also prints the birthday in text, so edit both if you change it.
+- **Phone number and email:** the `tel:` and `mailto:` links in the Contact card. Delete the number's line if you'd rather not show it publicly.
 - **Colors:** the variables at the top of `css/style.css`. The accent is `--ac`.
 
 ## Publish on GitHub Pages
-1. Create a GitHub account and a new public repository (for example `portfolio`).
-2. Upload everything in this folder (the files, not the folder itself) with **Add file > Upload files**, then commit.
-3. Open **Settings > Pages**. Under **Build and deployment**, choose **Deploy from a branch**, branch `main`, folder `/ (root)`, and save.
-4. After a minute or two your site appears at `https://YOUR-USERNAME.github.io/portfolio/`.
-
-Note: a public site shows your photos and details to anyone, so remove anything you don't want shared.
+Upload everything in this folder (the files and folders, not the parent folder) to your repository, commit, then use **Settings > Pages** with branch `main` and folder `/ (root)`. Changes appear a minute or two after each commit; press Ctrl+F5 to refresh.

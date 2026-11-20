@@ -31,27 +31,41 @@
   }));
   addEventListener('pageshow', e => { if (e.persisted) main.classList.remove('out-l', 'out-r'); });
 
-  // Gallery pagination (Family & Friends)
-  const g = $('.gal');
-  if (g) {
-    const items = [...g.children], pager = $('.pager'), label = $('.pager span');
-    const [prev, next] = $$('.pager button');
+  // Pagination: [data-per] shows N items per page; [data-fit] packs as many photos per page as fit without cropping
+  $$('[data-per],[data-fit]').forEach(g => {
+    const items = [...g.children], pager = g.nextElementSibling, label = $('span', pager);
+    const [prev, next] = $$('button', pager);
     let p = 0;
-    const per = () => (innerWidth < 800 ? 2 : +g.dataset.per || 4);
+    const groups = () => {
+      if (!g.hasAttribute('data-fit')) {
+        const n = innerWidth < 800 ? 2 : +g.dataset.per || 3, out = [];
+        items.forEach((_, i) => (i % n ? out[out.length - 1].push(i) : out.push([i])));
+        return out;
+      }
+      const max = (g.clientWidth / Math.max(g.clientHeight, 1)) * 1.15, out = [[]];
+      let sum = 0;
+      items.forEach((f, i) => {
+        const ar = +f.style.getPropertyValue('--ar') || 1;
+        if (sum + ar > max && out[out.length - 1].length) { out.push([]); sum = 0; }
+        out[out.length - 1].push(i);
+        sum += ar;
+      });
+      return out;
+    };
     const draw = () => {
-      const n = per(), total = Math.ceil(items.length / n);
-      p = Math.min(p, total - 1);
-      items.forEach((f, i) => (f.hidden = Math.floor(i / n) !== p));
-      pager.hidden = total < 2;
-      label.textContent = `${p + 1} / ${total}`;
+      const gr = groups();
+      p = Math.min(p, gr.length - 1);
+      items.forEach((f, i) => (f.hidden = !gr[p].includes(i)));
+      pager.hidden = gr.length < 2;
+      label.textContent = `${p + 1} / ${gr.length}`;
       prev.disabled = p === 0;
-      next.disabled = p === total - 1;
+      next.disabled = p === gr.length - 1;
     };
     prev.onclick = () => { p--; draw(); };
     next.onclick = () => { p++; draw(); };
     addEventListener('resize', draw);
     draw();
-  }
+  });
 
   // Lightbox for every [data-lb] element on the page
   const set = $$('[data-lb]');
