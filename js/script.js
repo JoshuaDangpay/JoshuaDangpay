@@ -42,7 +42,7 @@
         items.forEach((_, i) => (i % n ? out[out.length - 1].push(i) : out.push([i])));
         return out;
       }
-      const max = (g.clientWidth / Math.max(g.clientHeight, 1)) * 1.15, out = [[]];
+      const max = (g.clientWidth / Math.max(g.clientHeight, 1)) * 1.33, out = [[]];
       let sum = 0;
       items.forEach((f, i) => {
         const ar = +f.style.getPropertyValue('--ar') || 1;
@@ -56,6 +56,10 @@
       const gr = groups();
       p = Math.min(p, gr.length - 1);
       items.forEach((f, i) => (f.hidden = !gr[p].includes(i)));
+      if (g.hasAttribute('data-fit')) {
+        const sum = gr[p].reduce((s, i) => s + (+items[i].style.getPropertyValue('--ar') || 1), 0);
+        g.style.setProperty('--h', Math.min(g.clientHeight, (g.clientWidth - 12 * (gr[p].length - 1)) / sum) + 'px');
+      }
       pager.hidden = gr.length < 2;
       label.textContent = `${p + 1} / ${gr.length}`;
       prev.disabled = p === 0;
