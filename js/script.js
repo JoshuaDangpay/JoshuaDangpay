@@ -31,45 +31,37 @@
   }));
   addEventListener('pageshow', e => { if (e.persisted) main.classList.remove('out-l', 'out-r'); });
 
-  // Pagination: [data-per] shows N items per page; [data-fit] packs as many photos per page as fit without cropping
-  $$('[data-per],[data-fit]').forEach(g => {
-    const items = [...g.children], pager = g.nextElementSibling, label = $('span', pager);
-    const [prev, next] = $$('button', pager);
-    let p = 0;
-    const groups = () => {
-      if (!g.hasAttribute('data-fit')) {
-        const n = innerWidth < 800 ? 2 : +g.dataset.per || 3, out = [];
-        items.forEach((_, i) => (i % n ? out[out.length - 1].push(i) : out.push([i])));
-        return out;
+  // Gallery: arrange all photos in 1 to 3 rows so they fit on one screen without cropping
+  const g = $('.gal');
+  if (g) {
+    const items = $$('figure', g), gap = 12;
+    const ar = f => +f.style.getPropertyValue('--ar') || 1;
+    const layout = () => {
+      const W = g.clientWidth, H = g.clientHeight, tot = items.reduce((s, f) => s + ar(f), 0);
+      let best = null;
+      for (let r = 1; r <= Math.min(3, items.length); r++) {
+        const rows = [[]];
+        let s = 0;
+        items.forEach(f => {
+          if (s >= tot / r - 0.01 && rows.length < r) { rows.push([]); s = 0; }
+          rows[rows.length - 1].push(f);
+          s += ar(f);
+        });
+        const h = Math.min((H - gap * (rows.length - 1)) / rows.length,
+          ...rows.map(row => (W - gap * (row.length - 1)) / row.reduce((a, f) => a + ar(f), 0)));
+        if (!best || h > best.h * 1.08) best = { h, rows };
       }
-      const max = (g.clientWidth / Math.max(g.clientHeight, 1)) * 1.33, out = [[]];
-      let sum = 0;
-      items.forEach((f, i) => {
-        const ar = +f.style.getPropertyValue('--ar') || 1;
-        if (sum + ar > max && out[out.length - 1].length) { out.push([]); sum = 0; }
-        out[out.length - 1].push(i);
-        sum += ar;
-      });
-      return out;
+      g.replaceChildren(...best.rows.map(row => {
+        const d = document.createElement('div');
+        d.className = 'row';
+        d.append(...row);
+        return d;
+      }));
+      g.style.setProperty('--h', best.h + 'px');
     };
-    const draw = () => {
-      const gr = groups();
-      p = Math.min(p, gr.length - 1);
-      items.forEach((f, i) => (f.hidden = !gr[p].includes(i)));
-      if (g.hasAttribute('data-fit')) {
-        const sum = gr[p].reduce((s, i) => s + (+items[i].style.getPropertyValue('--ar') || 1), 0);
-        g.style.setProperty('--h', Math.min(g.clientHeight, (g.clientWidth - 12 * (gr[p].length - 1)) / sum) + 'px');
-      }
-      pager.hidden = gr.length < 2;
-      label.textContent = `${p + 1} / ${gr.length}`;
-      prev.disabled = p === 0;
-      next.disabled = p === gr.length - 1;
-    };
-    prev.onclick = () => { p--; draw(); };
-    next.onclick = () => { p++; draw(); };
-    addEventListener('resize', draw);
-    draw();
-  });
+    layout();
+    addEventListener('resize', layout);
+  }
 
   // Lightbox for every [data-lb] element on the page
   const set = $$('[data-lb]');
