@@ -7,8 +7,8 @@ Extract the zip fully, then double-click `index.html`. For best results use a lo
 
 ## Replace or add photos
 - Photos live in `assets/images/` (`profile`, `achievements`, `work-immersion`, `family-friends`). To replace one, save the new file with the **same filename**. Keep images under about 1800 px on the long side.
-- **Family & Friends:** in `family-friends.html`, copy one `<figure>...</figure>` inside `<div class="gal">`, change `src`, `alt` and the optional caption, and set `--ar` to width divided by height (for example `.75` for a 3:4 portrait, `1.3333` for 4:3). Pages and the page buttons adjust themselves.
-- **Awards:** in `achievements.html`, copy an `<div class="item">...</div>` inside `.awards`. Three show per page; the lightbox includes every award.
+- **Family & Friends:** in `family-friends.html`, copy one `<figure>...</figure>` inside `<div class="gal">`, change `src`, `alt` and the optional caption, and set `--ar` to width divided by height (for example `.75` for a 3:4 portrait, `1.3333` for 4:3). All photos stay on one screen: they are arranged in up to three rows and shrink as you add more, so keep it to about 8 photos.
+- **Awards:** in `achievements.html`, copy an `<div class="item">...</div>` inside `.awards`. The grid is designed for five awards; with more, the thumbnails get smaller (the lightbox still shows each one full size).
 
 ## Edit your information
 - **About me, contact, education, skills:** `personal.html`.

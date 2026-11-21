@@ -31,26 +31,36 @@
   }));
   addEventListener('pageshow', e => { if (e.persisted) main.classList.remove('out-l', 'out-r'); });
 
-  // Gallery pagination (Family & Friends)
+  // Gallery: arrange all photos in 1 to 3 rows so they fit on one screen without cropping
   const g = $('.gal');
   if (g) {
-    const items = [...g.children], pager = $('.pager'), label = $('.pager span');
-    const [prev, next] = $$('.pager button');
-    let p = 0;
-    const per = () => (innerWidth < 800 ? 2 : +g.dataset.per || 4);
-    const draw = () => {
-      const n = per(), total = Math.ceil(items.length / n);
-      p = Math.min(p, total - 1);
-      items.forEach((f, i) => (f.hidden = Math.floor(i / n) !== p));
-      pager.hidden = total < 2;
-      label.textContent = `${p + 1} / ${total}`;
-      prev.disabled = p === 0;
-      next.disabled = p === total - 1;
+    const items = $$('figure', g), gap = 12;
+    const ar = f => +f.style.getPropertyValue('--ar') || 1;
+    const layout = () => {
+      const W = g.clientWidth, H = g.clientHeight, tot = items.reduce((s, f) => s + ar(f), 0);
+      let best = null;
+      for (let r = 1; r <= Math.min(3, items.length); r++) {
+        const rows = [[]];
+        let s = 0;
+        items.forEach(f => {
+          if (s >= tot / r - 0.01 && rows.length < r) { rows.push([]); s = 0; }
+          rows[rows.length - 1].push(f);
+          s += ar(f);
+        });
+        const h = Math.min((H - gap * (rows.length - 1)) / rows.length,
+          ...rows.map(row => (W - gap * (row.length - 1)) / row.reduce((a, f) => a + ar(f), 0)));
+        if (!best || h > best.h * 1.08) best = { h, rows };
+      }
+      g.replaceChildren(...best.rows.map(row => {
+        const d = document.createElement('div');
+        d.className = 'row';
+        d.append(...row);
+        return d;
+      }));
+      g.style.setProperty('--h', best.h + 'px');
     };
-    prev.onclick = () => { p--; draw(); };
-    next.onclick = () => { p++; draw(); };
-    addEventListener('resize', draw);
-    draw();
+    layout();
+    addEventListener('resize', layout);
   }
 
   // Lightbox for every [data-lb] element on the page

@@ -1,4 +1,4 @@
-:root{--bg:#0d0c11;--sf:#17161d;--sf2:#1f1d27;--tx:#f4f2f8;--mu:#a09cad;--ac:#b39ddb;--bd:rgba(255,255,255,.09)}
+:root{--bg:#0c0918;--sf:#161030;--sf2:#1e1741;--tx:#f4f1fb;--mu:#a9a3c4;--ac:#b9a3f0;--bd:rgba(185,163,240,.14)}
 *{box-sizing:border-box;margin:0}
 [hidden]{display:none!important}
 html,body{height:100%}
@@ -44,9 +44,10 @@ dd{font-weight:500}
 .pi .card p{font-size:.95rem}
 .pi .card h3{margin-bottom:4px}
 /* Achievements */
-.ach{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;width:100%}
+.ach{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;width:100%}
 .ach .card{display:flex;flex-direction:column}
-.awards{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0}
+.awards{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:1fr 1fr;gap:12px;flex:1;min-height:0}
+.item{grid-column:span 2}.item:nth-child(n+4){grid-column:span 3}
 .item{display:flex;flex-direction:column;gap:6px;min-height:0}
 .item p{font-size:.82rem;line-height:1.4}
 .zoom{position:relative;flex:1;min-height:0;padding:0;background:var(--sf2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;cursor:zoom-in}
@@ -58,8 +59,9 @@ dd{font-weight:500}
 .wi p{font-size:.88rem}
 /* Family & Friends */
 .fam{flex-direction:column;gap:12px}
-.gal{flex:1;min-height:0;display:flex;gap:12px}
-.gal figure{flex:var(--ar) 1 0;min-width:0;position:relative;border-radius:12px;overflow:hidden;cursor:zoom-in;border:1px solid var(--bd)}
+.gal{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px}
+.gal .row{display:flex;justify-content:center;gap:12px}
+.gal figure{flex:none;height:var(--h,100%);width:calc(var(--h,100%)*var(--ar));position:relative;border-radius:12px;overflow:hidden;cursor:zoom-in;border:1px solid var(--bd)}
 .gal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
 .gal figure:hover img{transform:scale(1.03)}
 .gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.72));font-size:.85rem;opacity:0;transition:opacity .2s}
@@ -68,6 +70,24 @@ dd{font-weight:500}
 .pager button,.lb button{background:var(--sf);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:1rem}
 .pager button:hover:not(:disabled),.lb button:hover{border-color:var(--ac)}
 .pager button:disabled{opacity:.35;cursor:default}
+.pager[hidden]{display:flex!important;visibility:hidden}
+.ach .pager{margin-top:10px}
+.home .tx::before{content:"";width:56px;height:3px;border-radius:2px;background:var(--ac)}
+.pi .a{grid-column:1;grid-row:1/3}.pi .b{grid-column:2;grid-row:1}.pi .c{grid-column:2;grid-row:2}.pi .d{grid-column:3;grid-row:1/3}
+dd{overflow-wrap:anywhere}
+a.lk{color:var(--tx);text-decoration:none;border-bottom:1px solid var(--ac);transition:color .2s}
+a.lk:hover{color:var(--ac)}
+.sk{list-style:none;padding:0;display:grid;gap:10px}
+.sk li{display:flex;gap:12px;align-items:center;padding:12px 14px;border:1px solid var(--bd);border-radius:12px;background:var(--sf2)}
+.sk .ic{font-size:1.4rem}
+.sk b{display:block;font-size:.95rem;font-weight:600}
+.sk span span{font-size:.82rem;color:var(--mu)}
+.edu+.edu{margin-top:14px}
+.pi dl{font-size:1.05rem;gap:16px 20px}
+.pi .card p{font-size:1.02rem}
+.pi .a p{font-size:1.1rem;line-height:1.65}
+.pi .edu h3{font-size:1.05rem}
+.sk{flex:1;grid-auto-rows:1fr}
 /* Lightbox */
 .lb{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;gap:12px;padding:16px;background:rgba(6,5,9,.94)}
 .lb figure{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
@@ -82,7 +102,8 @@ dd{font-weight:500}
  .home{grid-template-columns:1fr;grid-template-rows:42% auto}
  .home .tx{padding:20px;gap:12px}
  .pi,.ach,.awards,.wi{grid-template-columns:1fr;grid-template-rows:none}
- .pi .big{grid-row:auto}
+ .item,.item:nth-child(n+4){grid-column:auto}
+ .pi .a,.pi .b,.pi .c,.pi .d{grid-column:auto;grid-row:auto}
  .zoom{min-height:240px}
  .gal{min-height:60vh}
  .lb img{max-width:calc(100vw - 32px)}
