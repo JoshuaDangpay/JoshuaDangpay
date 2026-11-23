@@ -64,7 +64,7 @@ dd{font-weight:500}
 .gal figure{flex:none;height:var(--h,100%);width:calc(var(--h,100%)*var(--ar));position:relative;border-radius:12px;overflow:hidden;cursor:zoom-in;border:1px solid var(--bd)}
 .gal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
 .gal figure:hover img{transform:scale(1.03)}
-.gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.72));font-size:.85rem;opacity:0;transition:opacity .2s}
+.gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.72));font-size:.9rem;font-weight:500}
 .gal figure:hover figcaption,.gal figure:focus-visible figcaption{opacity:1}
 .pager{display:flex;justify-content:center;align-items:center;gap:14px;color:var(--mu);font-size:.9rem}
 .pager button,.lb button{background:var(--sf);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:1rem}
